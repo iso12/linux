@@ -190,8 +190,13 @@ struct cxacru_data {
 	struct completion snd_done;
 };
 
-static int cxacru_cm(struct cxacru_data *instance, enum cxacru_cm_request cm,
-	u8 *wdata, int wsize, u8 *rdata, int rsize);
+static int cxacru_cm(struct cxacru_data *instance,
+		     enum cxacru_cm_request cm,
+  	             u8 *wdata,
+		     int wsize,
+		     u8 *rdata,
+		     int rsize);
+
 static void cxacru_poll_status(struct work_struct *work);
 
 /* Card info exported through sysfs */
@@ -314,7 +319,8 @@ static ssize_t mac_address_show(struct device *dev,
 }
 
 static ssize_t adsl_state_show(struct device *dev,
-	struct device_attribute *attr, char *buf)
+	                       struct device_attribute *attr,
+			       char *buf)
 {
 	static char *str[] = { "running", "stopped" };
 	struct cxacru_data *instance = to_usbatm_driver_data(
@@ -331,7 +337,9 @@ static ssize_t adsl_state_show(struct device *dev,
 }
 
 static ssize_t adsl_state_store(struct device *dev,
-	struct device_attribute *attr, const char *buf, size_t count)
+	                        struct device_attribute *attr,
+				const char *buf,
+				size_t count)
 {
 	struct cxacru_data *instance = to_usbatm_driver_data(
 			to_usb_interface(dev));
@@ -434,7 +442,9 @@ static ssize_t adsl_state_store(struct device *dev,
 /* CM_REQUEST_CARD_DATA_GET times out, so no show attribute */
 
 static ssize_t adsl_config_store(struct device *dev,
-	struct device_attribute *attr, const char *buf, size_t count)
+	                         struct device_attribute *attr,
+				 const char *buf,
+				 size_t count)
 {
 	struct cxacru_data *instance = to_usbatm_driver_data(
 			to_usb_interface(dev));
@@ -588,7 +598,8 @@ static void cxacru_timeout_kill(struct timer_list *t)
 	usb_unlink_urb(timer->urb);
 }
 
-static int cxacru_start_wait_urb(struct urb *urb, struct completion *done,
+static int cxacru_start_wait_urb(struct urb *urb,
+				 struct completion *done,
 				 int *actual_length)
 {
 	struct cxacru_timer timer = {
@@ -606,8 +617,12 @@ static int cxacru_start_wait_urb(struct urb *urb, struct completion *done,
 	return urb->status; /* must read status after completion */
 }
 
-static int cxacru_cm(struct cxacru_data *instance, enum cxacru_cm_request cm,
-		     u8 *wdata, int wsize, u8 *rdata, int rsize)
+static int cxacru_cm(struct cxacru_data *instance,
+		     enum cxacru_cm_request cm,
+		     u8 *wdata,
+		     int wsize,
+		     u8 *rdata,
+		     int rsize)
 {
 	int ret, actlen;
 	int offb, offd;
@@ -706,8 +721,10 @@ err:
 	return ret;
 }
 
-static int cxacru_cm_get_array(struct cxacru_data *instance, enum cxacru_cm_request cm,
-			       u32 *data, int size)
+static int cxacru_cm_get_array(struct cxacru_data *instance,
+			       enum cxacru_cm_request cm,
+			       u32 *data,
+			       int size)
 {
 	int ret, len;
 	__le32 *buf;
@@ -768,7 +785,7 @@ static int cxacru_card_status(struct cxacru_data *instance)
 }
 
 static int cxacru_atm_start(struct usbatm_data *usbatm_instance,
-		struct atm_dev *atm_dev)
+		            struct atm_dev *atm_dev)
 {
 	struct cxacru_data *instance = usbatm_instance->driver_data;
 	struct usb_interface *intf = usbatm_instance->usb_intf;
@@ -936,8 +953,14 @@ reschedule:
 				round_jiffies_relative(POLL_INTERVAL*HZ));
 }
 
-static int cxacru_fw(struct usb_device *usb_dev, enum cxacru_fw_request fw,
-		     u8 code1, u8 code2, u32 addr, const u8 *data, int size)
+static int cxacru_fw(struct usb_device *usb_dev,
+		     enum cxacru_fw_request fw,
+		     u8 code1,
+		     u8 code2,
+		     u32 addr,
+		     const u8 *data,
+		     int size)
+	
 {
 	int ret;
 	u8 *buf;
@@ -1074,7 +1097,8 @@ static void cxacru_upload_firmware(struct cxacru_data *instance,
 }
 
 static int cxacru_find_firmware(struct cxacru_data *instance,
-				char *phase, const struct firmware **fw_p)
+				char *phase,
+				const struct firmware **fw_p)
 {
 	struct usbatm_data *usbatm = instance->usbatm;
 	struct device *dev = &usbatm->usb_intf->dev;
@@ -1130,7 +1154,8 @@ static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
 }
 
 static int cxacru_bind(struct usbatm_data *usbatm_instance,
-		       struct usb_interface *intf, const struct usb_device_id *id)
+		       struct usb_interface *intf,
+		       const struct usb_device_id *id)
 {
 	struct cxacru_data *instance;
 	struct usb_device *usb_dev = interface_to_usbdev(intf);
@@ -1225,7 +1250,7 @@ static int cxacru_bind(struct usbatm_data *usbatm_instance,
 }
 
 static void cxacru_unbind(struct usbatm_data *usbatm_instance,
-		struct usb_interface *intf)
+		          struct usb_interface *intf)
 {
 	struct cxacru_data *instance = usbatm_instance->driver_data;
 	int is_polling = 1;
@@ -1347,7 +1372,7 @@ static struct usbatm_driver cxacru_driver = {
 };
 
 static int cxacru_usb_probe(struct usb_interface *intf,
-		const struct usb_device_id *id)
+	                    const struct usb_device_id *id)
 {
 	struct usb_device *usb_dev = interface_to_usbdev(intf);
 	char buf[15];
