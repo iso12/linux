@@ -108,7 +108,10 @@ pal_init(void)
 }
 
 static inline void
-load(unsigned long dst, unsigned long src, unsigned long count)
+load(unsigned long dst,
+     unsigned long src,
+     unsigned long count)
+	
 {
 	memcpy((void *)dst, (void *)src, count);
 }
