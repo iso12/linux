@@ -141,7 +141,8 @@ static void vc_refresh(struct vc_data *vc)
  */
 
 static int keyboard_notifier_call(struct notifier_block *blk,
-				  unsigned long code, void *_param)
+				  unsigned long code,
+				  void *_param)
 {
 	struct keyboard_notifier_param *param = _param;
 	struct vc_data *vc = param->vc;
@@ -260,7 +261,8 @@ static struct notifier_block keyboard_notifier_block = {
 };
 
 static int vt_notifier_call(struct notifier_block *blk,
-			    unsigned long code, void *_param)
+			    unsigned long code,
+			    void *_param)
 {
 	struct vt_notifier_param *param = _param;
 	struct vc_data *vc = param->vc;
@@ -342,8 +344,10 @@ static struct notifier_block vt_notifier_block = {
  * Called from printk.c when console=brl is given
  */
 
-int braille_register_console(struct console *console, int index,
-		char *console_options, char *braille_options)
+int braille_register_console(struct console *console,
+			     int index,
+		             char *console_options,
+			     char *braille_options)
 {
 	int ret;
 
